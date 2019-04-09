@@ -1,0 +1,21 @@
+$base-color: #cecece;
+
+.wrapper {
+  display: flex;
+  padding: 5px;
+
+  div:first-child {
+    flex: 0 0 600px;
+  }
+
+  div:nth-child(2) {
+    flex: 0 0 200px;
+  }
+}
+
+.header {
+  font-weight: bold;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $base-color;
+}
