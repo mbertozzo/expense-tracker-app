@@ -1,26 +1,59 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import gql from 'graphql-tag';
+import { Query, Mutation } from 'react-apollo';
+
 import {
   Button,
   Card,
   CardHeader,
   CardBody,
+  Col,
   FormGroup,
   Form,
   Input,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Container,
   Row,
-  Col
+  Spinner,
 } from "reactstrap";
+
+const _getCategories = gql `
+  query {
+    categories {
+      id
+      name
+    }
+  }
+`;
+
+const _addMovement = gql `
+  mutation createMovement(
+    $description: String!,
+    $amount: Float!,
+    $categoryId: ID!,
+  ) {
+    createMovement(
+      description: $description,
+      amount: $amount,
+      categoryId: $categoryId,
+    ) {
+      description
+      amount
+      categoryId
+    }
+  }
+`;
 
 class FormCard extends Component {
 
   state = {
     focused: false,
+    description: '',
+    amount: '',
+    categoryId: '',
   }
 
   getShadow() {
@@ -63,6 +96,8 @@ class FormCard extends Component {
                         id="input-description"
                         placeholder="Some details explaining the nature of the transaction"
                         type="text"
+                        value={this.state.description}
+                        onChange={(e) => this.setState({ description: e.target.value })}
                       />
                     </FormGroup>
                   </Col>
@@ -88,6 +123,8 @@ class FormCard extends Component {
                           className="border-0"
                           onFocus={() => this.setState({ focused: true })}
                           onBlur={() => this.setState({ focused: false })}
+                          value={this.state.amount}
+                          onChange={(e) => this.setState({ amount: e.target.value })}
                         />
                         <InputGroupAddon addonType="append">
                           <InputGroupText className="border-0">€</InputGroupText>
@@ -109,8 +146,21 @@ class FormCard extends Component {
                         className="form-control-alternative"
                         id="input-category"
                         placeholder="Category"
-                        type="text"
-                      />
+                        type="select"
+                        value={this.state.categoryId}
+                        onChange={(e) => this.setState({ categoryId: e.target.value })}
+                      >
+
+                        <Query query={_getCategories} fetchPolicy='cache-and-network'>
+                          {({ loading, error, data }) => {
+                            if (loading || error ) { return null } 
+
+                            return data.categories.map((item, key) => <option value={item.id} {...{key}}>{item.name}</option>)
+
+                          }}
+                        </Query>
+
+                      </Input>
                     </FormGroup>
                   </Col>
                   <Col lg="4">
@@ -135,11 +185,26 @@ class FormCard extends Component {
 
                 <Row>
                   <Col className="text-right mt-5">
-                    <Button
-                      color="primary"
-                    >
-                      Confirm
-                    </Button>
+                    <Mutation mutation={_addMovement} onCompleted={() => console.log('Completed')}>
+                      {(addMovement, { loading }) => (
+                        <Button
+                          color="primary"
+                          onClick={() => {
+                            addMovement({
+                              variables: {
+                                description: this.state.description,
+                                amount: parseFloat(this.state.amount),
+                                categoryId: this.state.categoryId,
+                              }
+                            })
+                          }}
+                        >
+
+                          {loading ? <Spinner color="light" /> : 'Conferma'}
+
+                        </Button>
+                      )}
+                    </Mutation>
                   </Col>
                 </Row>
 

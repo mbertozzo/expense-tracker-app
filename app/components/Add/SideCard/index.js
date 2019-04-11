@@ -55,17 +55,6 @@ const SideCard = (props) => {
               </div>
             </div>
           </Row>
-          {/* <div className="text-center">
-            <hr className="my-4" />
-            <p>
-              Ryan — the name taken by Melbourne-raised, Brooklyn-based
-              Nick Murphy — writes, performs and records all of his own
-              music.
-            </p>
-            <a href="#pablo" onClick={e => e.preventDefault()}>
-              Show more
-            </a>
-          </div> */}
         </CardBody>
       </Card>
     </Col>
