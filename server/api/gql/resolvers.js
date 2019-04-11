@@ -9,7 +9,8 @@ module.exports = {
     movements: (parent, args, { db }, info) => db.movement.findAll(),
     categories: (parent, args, { db }, info) => db.category.findAll(),
     movement: (parent, { id }, { db }, info) => db.movement.findByPk(id),
-    category: (parent, { id }, { db }, info) => db.category.findByPk(id) 
+    category: (parent, { id }, { db }, info) => db.category.findByPk(id),
+    amount: (parent, args, { db }, info) => db.movement.sum('amount'),
   },
   Mutation: {
     createMovement: (parent, { description, amount, categoryId }, { db }, info) =>

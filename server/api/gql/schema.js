@@ -17,6 +17,7 @@ module.exports = `
     movement(id: ID!): Movement
     category(id: ID!): Category
     categories: [Category!]!
+    amount: Float!
   }
   type Mutation {
     createMovement(description: String, amount:Float!, categoryId: ID!): Movement!
