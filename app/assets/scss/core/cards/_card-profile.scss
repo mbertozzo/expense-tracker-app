@@ -26,9 +26,9 @@
     > div {
         text-align: center;
         margin-right: 1rem;
-        padding: .875rem;
+        padding: .5rem;
 
-        &:last-child {
+        &:nth-child(3n+3) {
             margin-right: 0;
         }
 

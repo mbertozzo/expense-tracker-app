@@ -45,7 +45,9 @@ class ReportTable extends React.Component {
             {description}
           </span>
         </th>
-        <td>{amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} €</td>
+        <td className="text-right">
+          {amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} €
+        </td>
         <td>
           <Badge color="" className="badge-dot mr-4">
             <i className="bg-warning" />

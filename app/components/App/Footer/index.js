@@ -10,14 +10,14 @@ class Footer extends React.Component {
       <Container fluid>
         <footer className="footer">
           <Row className="align-items-center justify-content-xl-between">
-            <Col xl="6">
+            <Col xs="6">
               <div className="copyright text-xl-left text-muted">
                 <strong>Avenal</strong> // Alpha Version 0.0.1
               </div>
             </Col>
 
-            <Col xl="6">
-              <div className="copyright text-xl-right text-muted">
+            <Col xs="6">
+              <div className="copyright text-right text-muted">
                 {/* Created with <i className="ni ni-favourite-28" /> in Milan */}
                 Created with 💙 in Milan
               </div>

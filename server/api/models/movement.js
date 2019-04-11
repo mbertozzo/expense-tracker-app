@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       description: DataTypes.STRING,
       amount: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.DECIMAL(10,2),
         allowNull: false
       },
     },

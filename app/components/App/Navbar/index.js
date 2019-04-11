@@ -22,10 +22,10 @@ class MainNavbar extends React.Component {
   render() {
     return (
       <>
-        <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
-          <Container fluid>
+        <Navbar className="navbar-top navbar-dark" expand="xs" id="navbar-main">
+          <Container fluid style={{padding: '0 15px'}}>
             <Link
-              className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
+              className="h4 mb-0 text-white text-uppercase"
               to="/"
             >
               Avenal
@@ -42,7 +42,7 @@ class MainNavbar extends React.Component {
                 </InputGroup>
               </FormGroup>
             </Form> */}
-            <Nav className="align-items-center d-none d-md-flex" navbar>
+            <Nav className="align-items-center d-none d-flex" navbar>
               <UncontrolledDropdown nav>
                 <DropdownToggle className="pr-0" nav>
                   <Media className="align-items-center">

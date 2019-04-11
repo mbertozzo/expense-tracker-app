@@ -28,6 +28,8 @@ class ReportTable extends React.Component {
 
     const { data, loading, error } = this.props;
 
+    // Create table rows with GraphQL data, show spinner on loading
+    // or error message if something fails
     let content = null;
     if (loading) {
       content = (
@@ -53,7 +55,7 @@ class ReportTable extends React.Component {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Last movements</h3>
+                    <h3 className="mb-0">Latest movements</h3>
                   </div>
                   <div className="col text-right">
                     <Button
@@ -70,7 +72,7 @@ class ReportTable extends React.Component {
                 <thead className="thead-light">
                   <tr>
                     <th scope="col">Description</th>
-                    <th scope="col">Amount</th>
+                    <th scope="col" className="text-right">Amount</th>
                     <th scope="col">Category</th>
                     <th scope="col" />
                   </tr>

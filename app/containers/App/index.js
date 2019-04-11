@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet';
 
 // Containers
 import Dashboard from 'containers/Dashboard';
+import Add from 'containers/Add';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 //Components
@@ -34,6 +35,7 @@ const App = (props) => {
 
       <Switch>
         <Route exact path="/" render={(routeProps) => <Dashboard {...routeProps} {...props} />} />
+        <Route path="/add" component={Add} />
         <Route component={NotFoundPage} />
       </Switch>
       
