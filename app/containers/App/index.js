@@ -35,7 +35,7 @@ const App = (props) => {
 
       <Switch>
         <Route exact path="/" render={(routeProps) => <Dashboard {...routeProps} {...props} />} />
-        <Route path="/add" component={Add} />
+        <Route path="/add" render={(routeProps) => <Add {...routeProps} {...props} />} />
         <Route component={NotFoundPage} />
       </Switch>
       

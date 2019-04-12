@@ -29,7 +29,7 @@ const Add = (props) => {
       
       <Container className="mt--7" fluid>
         <Row>
-          <FormCard xl="9" />
+          <FormCard xl="9" {...props} />
           <SideCard xl="3" />
         </Row>
       </Container>

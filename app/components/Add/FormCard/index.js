@@ -150,7 +150,8 @@ class FormCard extends Component {
                         value={this.state.categoryId}
                         onChange={(e) => this.setState({ categoryId: e.target.value })}
                       >
-
+                        <option value=''>Select category</option>
+                        
                         <Query query={_getCategories} fetchPolicy='cache-and-network'>
                           {({ loading, error, data }) => {
                             if (loading || error ) { return null } 
@@ -174,8 +175,9 @@ class FormCard extends Component {
                       <Input
                         className="form-control-alternative"
                         id="input-postal-date"
-                        placeholder="15/02/2019"
+                        placeholder="Not yet available"
                         type="text"
+                        disabled
                       />
                     </FormGroup>
                   </Col>
@@ -185,25 +187,28 @@ class FormCard extends Component {
 
                 <Row>
                   <Col className="text-right mt-5">
-                    <Mutation mutation={_addMovement} onCompleted={() => console.log('Completed')}>
-                      {(addMovement, { loading }) => (
-                        <Button
-                          color="primary"
-                          onClick={() => {
-                            addMovement({
-                              variables: {
-                                description: this.state.description,
-                                amount: parseFloat(this.state.amount),
-                                categoryId: this.state.categoryId,
-                              }
-                            })
-                          }}
-                        >
+                    <Mutation mutation={_addMovement} onCompleted={() => this.props._changeRoute('/')}>
+                      {(addMovement, { loading, error, data }) => {
+                        if (loading) { return <Spinner color="primary" /> }
+                        if (error) { return <p className="text-danger">An error occurred: entry not added. Please retry in a while.</p> }
 
-                          {loading ? <Spinner color="light" /> : 'Conferma'}
-
-                        </Button>
-                      )}
+                        return (
+                          <Button
+                            color="primary"
+                            onClick={() => {
+                              addMovement({
+                                variables: {
+                                  description: this.state.description,
+                                  amount: parseFloat(this.state.amount),
+                                  categoryId: this.state.categoryId,
+                                }
+                              })
+                            }}
+                          >
+                            Confirm
+                          </Button>
+                        )
+                      }}
                     </Mutation>
                   </Col>
                 </Row>

@@ -6,7 +6,7 @@ module.exports = {
     category: (parent, args, context, info) => parent.getCategory(),
   },
   Query: {
-    movements: (parent, args, { db }, info) => db.movement.findAll(),
+    movements: (parent, args, { db }, info) => db.movement.findAll({ order: [ ['id', 'DESC'] ] }),
     categories: (parent, args, { db }, info) => db.category.findAll(),
     movement: (parent, { id }, { db }, info) => db.movement.findByPk(id),
     category: (parent, { id }, { db }, info) => db.category.findByPk(id),
@@ -34,6 +34,11 @@ module.exports = {
         where: {
           id: id
         }
-      })
+      }),
+    createCategory: (parent, { name, description }, { db }, info) =>
+      db.category.create({
+        name: name,
+        description: description,
+      }),
   }
 };
