@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import gql from 'graphql-tag';
+import { _addCategory } from 'api/mutations';
+import { _getCategories } from 'api/queries';
 import { Mutation } from 'react-apollo';
 
 import {
@@ -17,29 +18,14 @@ import {
   Spinner,
 } from "reactstrap";
 
-const _addCategory = gql `
-  mutation createCategory(
-    $name: String!,
-    $description: String,
-  ) {
-    createCategory(
-      name: $name,
-      description: $description,
-    ) {
-      name
-      description
-    }
-  }
-`;
-
 class SideCard extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
-      description: '',
+      name: undefined,
+      description: undefined,
       completed: false,
     }
 
@@ -50,7 +36,7 @@ class SideCard extends Component {
     this.setState({ completed: true });
 
     setTimeout(() => {
-      this.setState({ completed: false })
+      this.setState({ completed: false, name: '', description: '' })
     }, 1500);
   }
 
@@ -108,7 +94,24 @@ class SideCard extends Component {
 
             <Row>
               <Col className="text-right mt-5">
-                <Mutation mutation={_addCategory} onCompleted={this.setCompleted}>
+                <Mutation 
+                  mutation={_addCategory}
+                  onCompleted={this.setCompleted}
+                  update={(store, { data: { createCategory } }) => {
+                    /** This function is called after the server returned the response.
+                     * It receives the payload of the mutation (defined in api/mutations.js)
+                     * and the current cache (store) as arguments. We read the query cached
+                     * content and add to it the mutation payload. This way, the server and the
+                     * cache will be in sync again. We're sure the mutation content was correctly
+                     * processed by the server because this function got the response.
+                     */
+
+                    const cachedCategories = store.readQuery({ query: _getCategories });
+                    cachedCategories.categories.push(createCategory);
+
+                    store.writeQuery({ query: _getCategories, data: cachedCategories});
+                  }}
+                >
                   {(addMovement, { loading, error, data }) => {
                     if (loading) { return <Spinner color="primary" /> }
                     if (error) { return <p className="text-danger">An error occurred: entry not added. Please retry in a while.</p> }

@@ -23,6 +23,6 @@ module.exports = `
     createMovement(description: String, amount:Float!, categoryId: ID!): Movement!
     updateMovement(id: ID!, description: String, amount:Float!): [Int!]!
     deleteMovement(id: ID!): Int!
-    createCategory(name: String!,  description: String): Category!
+    createCategory(name: String!,  description: String!): Category!
   }
 `;

@@ -4,24 +4,11 @@ import messages from './messages';
 
 import cx from 'classnames';
 
-import gql from 'graphql-tag';
+import { _getMovements } from 'api/queries';
 import { Query } from 'react-apollo';
 import ReportTable from 'components/Dashboard/ReportTable';
-import ReportTableCopy from 'components/Dashboard/ReportTable/index-copy.js';
 
 import styles from './styles.module.scss';
-
-const _getMovements = gql `
-  query {
-    movements {
-      description
-      amount
-      category {
-        name
-      }
-    }
-  }
-`;
 
 /* eslint-disable react/prefer-stateless-function */
 const HomePage = (props) => (

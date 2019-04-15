@@ -20,7 +20,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
-class ReportTable extends React.Component {
+class TableEntry extends React.Component {
   render() {
 
     const { description, amount, category: { name: categoryName } } = this.props;
@@ -94,4 +94,4 @@ class ReportTable extends React.Component {
   }
 }
 
-export default ReportTable;
+export default TableEntry;

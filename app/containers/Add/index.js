@@ -28,7 +28,7 @@ const Add = (props) => {
       </Helmet>
       
       <Container className="mt--7" fluid>
-        <Row>
+        <Row className="d-flex align-items-stretch">
           <FormCard xl="9" {...props} />
           <SideCard xl="3" />
         </Row>

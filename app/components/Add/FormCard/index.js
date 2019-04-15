@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import gql from 'graphql-tag';
+import { _getCategories } from 'api/queries';
+import { _addMovement } from 'api/mutations';
 import { Query, Mutation } from 'react-apollo';
 
 import {
@@ -20,40 +21,13 @@ import {
   Spinner,
 } from "reactstrap";
 
-const _getCategories = gql `
-  query {
-    categories {
-      id
-      name
-    }
-  }
-`;
-
-const _addMovement = gql `
-  mutation createMovement(
-    $description: String!,
-    $amount: Float!,
-    $categoryId: ID!,
-  ) {
-    createMovement(
-      description: $description,
-      amount: $amount,
-      categoryId: $categoryId,
-    ) {
-      description
-      amount
-      categoryId
-    }
-  }
-`;
-
 class FormCard extends Component {
 
   state = {
     focused: false,
-    description: '',
-    amount: '',
-    categoryId: '',
+    description: undefined,
+    amount: undefined,
+    categoryId: undefined,
   }
 
   getShadow() {
@@ -191,7 +165,7 @@ class FormCard extends Component {
                       {(addMovement, { loading, error, data }) => {
                         if (loading) { return <Spinner color="primary" /> }
                         if (error) { return <p className="text-danger">An error occurred: entry not added. Please retry in a while.</p> }
-
+                        
                         return (
                           <Button
                             color="primary"
