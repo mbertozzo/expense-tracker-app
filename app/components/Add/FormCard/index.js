@@ -25,21 +25,60 @@ import {
 class FormCard extends Component {
 
   state = {
-    focused: false,
-    description: undefined,
-    amount: undefined,
-    categoryId: undefined,
+    description: {
+      value: '',
+      invalid: false,
+      focused: false,
+    },
+    amount: {
+      value: '',
+      invalid: false,
+      focused: false,
+    },
+    categoryId: {
+      value: '',
+      invalid: false,
+      focused: false,
+    },
+    pristine: true,
   }
 
-  getShadow() {
-    if (this.state.focused) {
+  getShadow(field) {
+    if (this.state[field].focused) {
       return { boxShadow: '0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)' }
     } else {
       return { boxShadow: '0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02)' }
     }
   }
 
+  handleChange(e, field) {
+    const { value } = e.target;
+
+    if (value === '') {
+      this.setState({ [field]: { ...this.state[field], value: e.target.value, invalid: true } });
+    } else {
+      this.setState({ [field]: { ...this.state[field], value: e.target.value, invalid: false } });
+    }
+  }
+
+  handleBlur(e, field) {
+    const { value } = e.target;
+
+    if ( value === '' ) {
+      this.setState({ [field]: { ...this.state[field], invalid: true, focused: false } });
+    } else {
+      this.setState({ [field]: { ...this.state[field], invalid: false, focused: false } });
+    }
+  }
+
+  handleFocus(field) {
+    this.setState({ [field]: { ...this.state[field], focused: true }, pristine: false });
+  }
+
   render() {
+    console.log('STATE', this.state);
+    const { pristine, description, amount, categoryId } = this.state;
+
     return (
       <Col xl={this.props.xl}>
         <Card className="bg-secondary shadow">
@@ -71,11 +110,13 @@ class FormCard extends Component {
                         id="input-description"
                         placeholder="Some details explaining the nature of the transaction"
                         type="text"
-                        value={this.state.description}
-                        onChange={(e) => this.setState({ description: e.target.value })}
-                        // invalid={true}
+                        value={description.value}
+                        onChange={(e) => this.handleChange(e, 'description')}
+                        onFocus={() => this.handleFocus('description')}
+                        onBlur={(e) => this.handleBlur(e, 'description')}
+                        invalid={description.invalid}
                       />
-                      {/* <FormFeedback>Description field cannot be empty!</FormFeedback> */}
+                      <FormFeedback>Description field cannot be empty!</FormFeedback>
                     </FormGroup>
                   </Col>
                 </Row>
@@ -90,27 +131,29 @@ class FormCard extends Component {
                         Amount
                       </label>
 
-                      <InputGroup
-                        style={this.getShadow()}
-                      >
-                        <Input
-                          id="input-amount"
-                          placeholder="1234.56"
-                          type="text"
-                          className="border-0"
-                          onFocus={() => this.setState({ focused: true })}
-                          onBlur={() => this.setState({ focused: false })}
-                          value={this.state.amount}
-                          onChange={(e) => this.setState({ amount: e.target.value })}
-                        />
-                        <InputGroupAddon addonType="append">
-                          <InputGroupText className="border-0">€</InputGroupText>
-                        </InputGroupAddon>
+                      <InputGroup>
+                        <div className="input-group" style={this.getShadow('amount')}>
+                          <Input
+                            id="input-amount"
+                            placeholder="1234.56"
+                            type="text"
+                            className="border-0"
+                            value={amount.value}
+                            onChange={(e) => this.handleChange(e, 'amount')}
+                            onFocus={() => this.handleFocus('amount')}
+                            onBlur={(e) => this.handleBlur(e, 'amount')}
+                            invalid={amount.invalid}
+                          />
+                          <InputGroupAddon addonType="append">
+                            <InputGroupText className="border-0 rounded-right">€</InputGroupText>
+                          </InputGroupAddon>
+                          <FormFeedback style={{ position: 'absolute', bottom: '-25px' }}>Amount field cannot be empty!</FormFeedback>
+                        </div>
+                        
                       </InputGroup>
-
-                      
                     </FormGroup>
                   </Col>
+
                   <Col lg="4">
                     <FormGroup>
                       <label
@@ -124,8 +167,11 @@ class FormCard extends Component {
                         id="input-category"
                         placeholder="Category"
                         type="select"
-                        value={this.state.categoryId}
-                        onChange={(e) => this.setState({ categoryId: e.target.value })}
+                        value={categoryId.value}
+                        onChange={(e) => this.handleChange(e, 'categoryId')}
+                        onFocus={() => this.handleFocus('categoryId')}
+                        onBlur={(e) => this.handleBlur(e, 'categoryId')}
+                        invalid={categoryId.invalid}
                       >
                         <option value=''>Select category</option>
                         
@@ -139,6 +185,7 @@ class FormCard extends Component {
                         </Query>
 
                       </Input>
+                      <FormFeedback>Category field cannot be empty!</FormFeedback>
                     </FormGroup>
                   </Col>
                   <Col lg="4">
@@ -198,12 +245,18 @@ class FormCard extends Component {
                             onClick={() => {
                               addMovement({
                                 variables: {
-                                  description: this.state.description,
-                                  amount: parseFloat(this.state.amount),
-                                  categoryId: this.state.categoryId,
+                                  description: description.value,
+                                  amount: parseFloat(amount.value),
+                                  categoryId: categoryId.value,
                                 }
                               })
                             }}
+                            disabled={
+                              pristine ||
+                              description.invalid || 
+                              amount.invalid ||
+                              categoryId.invalid
+                            }
                           >
                             Confirm
                           </Button>
