@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { _getCategories } from 'api/queries';
+import { _getCategories, _getBalance, _getExpenses, _getRevenues } from 'api/queries';
 import { _addMovement } from 'api/mutations';
 import { Query, Mutation } from 'react-apollo';
 
@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardBody,
   Col,
+  FormFeedback,
   FormGroup,
   Form,
   Input,
@@ -72,7 +73,9 @@ class FormCard extends Component {
                         type="text"
                         value={this.state.description}
                         onChange={(e) => this.setState({ description: e.target.value })}
+                        // invalid={true}
                       />
+                      {/* <FormFeedback>Description field cannot be empty!</FormFeedback> */}
                     </FormGroup>
                   </Col>
                 </Row>
@@ -161,7 +164,30 @@ class FormCard extends Component {
 
                 <Row>
                   <Col className="text-right mt-5">
-                    <Mutation mutation={_addMovement} onCompleted={() => this.props._changeRoute('/')}>
+                    <Mutation 
+                      mutation={_addMovement}
+                      onCompleted={() => this.props._changeRoute('/')}
+                      update={(store, { data: { createMovement } }) => {
+                        const cachedBalance = store.readQuery({ query: _getBalance });
+                        const cachedExpenses = store.readQuery({ query: _getExpenses });
+                        const cachedRevenues = store.readQuery({ query: _getRevenues });
+                    
+                        try{
+                          cachedBalance.balance = (cachedBalance.balance + createMovement.amount)
+                          store.writeQuery({ query: _getBalance, data: cachedBalance});
+
+                          if (createMovement.amount > 0) {
+                            cachedRevenues.revenues = (cachedRevenues.revenues + createMovement.amount)
+                            store.writeQuery({ query: _getRevenues, data: cachedRevenues })
+                          } else {
+                            cachedExpenses.expenses = (cachedExpenses.expenses + createMovement.amount)
+                            store.writeQuery({ query: _getExpenses, data: cachedExpenses })
+                          }
+                        } catch (error) {
+                          console.log("Mutation data not merged with Apollo cache. Error stack:\n", error);
+                        }
+                      }}
+                    >
                       {(addMovement, { loading, error, data }) => {
                         if (loading) { return <Spinner color="primary" /> }
                         if (error) { return <p className="text-danger">An error occurred: entry not added. Please retry in a while.</p> }

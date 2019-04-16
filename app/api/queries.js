@@ -20,3 +20,21 @@ export const _getCategories = gql `
     }
   }
 `;
+
+export const _getBalance = gql `
+  query {
+    balance
+  }
+`;
+
+export const _getExpenses = gql `
+  query {
+    expenses
+  }
+`;
+
+export const _getRevenues = gql `
+  query {
+    revenues
+  }
+`;

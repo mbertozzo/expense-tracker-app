@@ -20,3 +20,16 @@ Please note that in order for everything to work, you'll need MySQL up and runni
 ### Configuring the connection parameters for the DB
 Just rename the `config-template.json` file in the `/server/api/config` folder to `config.json`.
 You can now specify up to three different connection parameters, based on working environment (development, test, production). If you're unsure what to change, you should edit the `development` params.
+
+### Ready to go!
+Finally, you can run the project by typing `$ npm start` in your console.  
+
+This will fire up Node and create two tables (`movement` and `category`) in the DB you specified in `config.json`. Please note that previously existing tables with the same name will be dropped. To prevent this, open the `index.js` file in `/server/` and look for the following lines:
+
+```javascript
+db.sequelize.sync({ force: true }).then(() => {
+  ...
+});
+```
+
+Then, just set `force: false` to append future entries to the existing data.

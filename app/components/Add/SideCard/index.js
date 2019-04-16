@@ -107,9 +107,13 @@ class SideCard extends Component {
                      */
 
                     const cachedCategories = store.readQuery({ query: _getCategories });
-                    cachedCategories.categories.push(createCategory);
-
-                    store.writeQuery({ query: _getCategories, data: cachedCategories});
+                    
+                    try{
+                      cachedCategories.categories.push(createCategory);
+                      store.writeQuery({ query: _getCategories, data: cachedCategories});
+                    } catch (error) {
+                      console.log("Mutation data not merged with Apollo cache. Error stack:\n", error);
+                    }
                   }}
                 >
                   {(addMovement, { loading, error, data }) => {
