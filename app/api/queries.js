@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const _getMovements = gql `
 query {
   movements {
+    id
     description
     amount
     category {

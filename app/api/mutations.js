@@ -18,6 +18,16 @@ export const _addMovement = gql `
   }
 `;
 
+export const _deleteMovement = gql `
+  mutation deleteMovement(
+    $id: ID!
+  ) {
+    deleteMovement(
+      id: $id
+    )
+  }
+`;
+
 export const _addCategory = gql `
   mutation createCategory(
     $name: String!,

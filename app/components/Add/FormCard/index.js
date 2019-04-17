@@ -190,11 +190,15 @@ const FormCard = (props) => {
 }
 
 const formikOpt = {
-  mapPropsToValues: () => ({
-    description: '',
-    amount: '',
-    categoryId: '',
-  }),
+  mapPropsToValues: (props) => {
+    const { formInit: { description = '', amount = '', categoryId = '' } = {} } = props;
+
+    return ({
+      description,
+      amount,
+      categoryId,
+    })
+  },
   validate: values => {
     const errors = {};
     if (values.description === '') {

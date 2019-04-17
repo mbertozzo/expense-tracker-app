@@ -1,5 +1,7 @@
 import React from "react";
 
+import DeleteEntry from './DeleteEntry';
+
 import {
   Badge,
   Card,
@@ -23,7 +25,7 @@ import {
 class TableEntry extends React.Component {
   render() {
 
-    const { description, amount, category: { name: categoryName } } = this.props;
+    const { id, description, amount, category: { name: categoryName } } = this.props;
 
     let color, icon = '';
     if (amount > 0) {
@@ -67,12 +69,9 @@ class TableEntry extends React.Component {
               <i className="fas fa-ellipsis-v" />
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
-              <DropdownItem
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                Action
-              </DropdownItem>
+              
+              <DeleteEntry {...{id}} {...{amount}} />
+
               <DropdownItem
                 href="#pablo"
                 onClick={e => e.preventDefault()}
