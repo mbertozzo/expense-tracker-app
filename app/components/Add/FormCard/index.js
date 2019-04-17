@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { _getCategories, _getBalance, _getExpenses, _getRevenues } from 'api/queries';
-import { _addMovement } from 'api/mutations';
-import { Query, Mutation } from 'react-apollo';
+import { withFormik } from 'formik';
+
+import { _getCategories } from 'api/queries';
+import { Query } from 'react-apollo';
+
+import Submit from './Submit';
 
 import {
-  Button,
   Card,
   CardHeader,
   CardBody,
@@ -19,261 +21,193 @@ import {
   InputGroupAddon,
   InputGroupText,
   Row,
-  Spinner,
 } from "reactstrap";
 
-class FormCard extends Component {
+const FormCard = (props) => {
 
-  state = {
-    description: {
-      value: '',
-      invalid: false,
-      focused: false,
-    },
-    amount: {
-      value: '',
-      invalid: false,
-      focused: false,
-    },
-    categoryId: {
-      value: '',
-      invalid: false,
-      focused: false,
-    },
-    pristine: true,
-  }
+  const { values, touched, errors, handleChange, handleBlur, isValid, _changeRoute } = props;
 
-  getShadow(field) {
-    if (this.state[field].focused) {
+  const [focused, setFocused] = useState(false);
+  
+  const getShadow = () => {
+    if (focused) {
       return { boxShadow: '0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)' }
     } else {
       return { boxShadow: '0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02)' }
     }
   }
 
-  handleChange(e, field) {
-    const { value } = e.target;
-
-    if (value === '') {
-      this.setState({ [field]: { ...this.state[field], value: e.target.value, invalid: true } });
-    } else {
-      this.setState({ [field]: { ...this.state[field], value: e.target.value, invalid: false } });
-    }
+  const onFocus = () => {
+    setFocused(true);
   }
 
-  handleBlur(e, field) {
-    const { value } = e.target;
-
-    if ( value === '' ) {
-      this.setState({ [field]: { ...this.state[field], invalid: true, focused: false } });
-    } else {
-      this.setState({ [field]: { ...this.state[field], invalid: false, focused: false } });
-    }
+  const onBlur = () => {
+    setFocused(false);
   }
 
-  handleFocus(field) {
-    this.setState({ [field]: { ...this.state[field], focused: true }, pristine: false });
-  }
+  return (
+    <Col xl={props.xl}>
+      <Card className="bg-secondary shadow">
+        <CardHeader className="bg-white border-0">
+          <Row className="align-items-center">
+            <Col> 
+              <h3 className="mb-0">Add movement</h3>
+            </Col>
+          </Row>
+        </CardHeader>
+        <CardBody>
+          <Form>
+            <h6 className="heading-small text-muted mb-4">
+              General Info
+            </h6>
+            <div className="pl-lg-4">
 
-  render() {
-    console.log('STATE', this.state);
-    const { pristine, description, amount, categoryId } = this.state;
-
-    return (
-      <Col xl={this.props.xl}>
-        <Card className="bg-secondary shadow">
-          <CardHeader className="bg-white border-0">
-            <Row className="align-items-center">
-              <Col> 
-                <h3 className="mb-0">Add movement</h3>
-              </Col>
-            </Row>
-          </CardHeader>
-          <CardBody>
-            <Form>
-              <h6 className="heading-small text-muted mb-4">
-                General Info
-              </h6>
-              <div className="pl-lg-4">
-
-                <Row>
-                  <Col lg="12">
-                    <FormGroup>
-                      <label
-                        className="form-control-label"
-                        htmlFor="input-description"
-                      >
-                        Description
-                      </label>
-                      <Input
-                        className="form-control-alternative"
-                        id="input-description"
-                        placeholder="Some details explaining the nature of the transaction"
-                        type="text"
-                        value={description.value}
-                        onChange={(e) => this.handleChange(e, 'description')}
-                        onFocus={() => this.handleFocus('description')}
-                        onBlur={(e) => this.handleBlur(e, 'description')}
-                        invalid={description.invalid}
-                      />
-                      <FormFeedback>Description field cannot be empty!</FormFeedback>
-                    </FormGroup>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg="4">
-                    <FormGroup>
-                      <label
-                        className="form-control-label"
-                        htmlFor="input-amount"
-                      >
-                        Amount
-                      </label>
-
-                      <InputGroup>
-                        <div className="input-group" style={this.getShadow('amount')}>
-                          <Input
-                            id="input-amount"
-                            placeholder="1234.56"
-                            type="text"
-                            className="border-0"
-                            value={amount.value}
-                            onChange={(e) => this.handleChange(e, 'amount')}
-                            onFocus={() => this.handleFocus('amount')}
-                            onBlur={(e) => this.handleBlur(e, 'amount')}
-                            invalid={amount.invalid}
-                          />
-                          <InputGroupAddon addonType="append">
-                            <InputGroupText className="border-0 rounded-right">€</InputGroupText>
-                          </InputGroupAddon>
-                          <FormFeedback style={{ position: 'absolute', bottom: '-25px' }}>Amount field cannot be empty!</FormFeedback>
-                        </div>
-                        
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-
-                  <Col lg="4">
-                    <FormGroup>
-                      <label
-                        className="form-control-label"
-                        htmlFor="input-category"
-                      >
-                        Category
-                      </label>
-                      <Input
-                        className="form-control-alternative"
-                        id="input-category"
-                        placeholder="Category"
-                        type="select"
-                        value={categoryId.value}
-                        onChange={(e) => this.handleChange(e, 'categoryId')}
-                        onFocus={() => this.handleFocus('categoryId')}
-                        onBlur={(e) => this.handleBlur(e, 'categoryId')}
-                        invalid={categoryId.invalid}
-                      >
-                        <option value=''>Select category</option>
-                        
-                        <Query query={_getCategories} fetchPolicy='cache-and-network'>
-                          {({ loading, error, data }) => {
-                            if (loading || error ) { return null } 
-
-                            return data.categories.map((item, key) => <option value={item.id} {...{key}}>{item.name}</option>)
-
-                          }}
-                        </Query>
-
-                      </Input>
-                      <FormFeedback>Category field cannot be empty!</FormFeedback>
-                    </FormGroup>
-                  </Col>
-                  <Col lg="4">
-                    <FormGroup>
-                      <label
-                        className="form-control-label"
-                        htmlFor="input-date"
-                      >
-                        Date
-                      </label>
-                      <Input
-                        className="form-control-alternative"
-                        id="input-postal-date"
-                        placeholder="Not yet available"
-                        type="text"
-                        disabled
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-
-                {/* <hr class="my-4" /> */}
-
-                <Row>
-                  <Col className="text-right mt-5">
-                    <Mutation 
-                      mutation={_addMovement}
-                      onCompleted={() => this.props._changeRoute('/')}
-                      update={(store, { data: { createMovement } }) => {
-                        const cachedBalance = store.readQuery({ query: _getBalance });
-                        const cachedExpenses = store.readQuery({ query: _getExpenses });
-                        const cachedRevenues = store.readQuery({ query: _getRevenues });
-                    
-                        try{
-                          cachedBalance.balance = (cachedBalance.balance + createMovement.amount)
-                          store.writeQuery({ query: _getBalance, data: cachedBalance});
-
-                          if (createMovement.amount > 0) {
-                            cachedRevenues.revenues = (cachedRevenues.revenues + createMovement.amount)
-                            store.writeQuery({ query: _getRevenues, data: cachedRevenues })
-                          } else {
-                            cachedExpenses.expenses = (cachedExpenses.expenses + createMovement.amount)
-                            store.writeQuery({ query: _getExpenses, data: cachedExpenses })
-                          }
-                        } catch (error) {
-                          console.log("Mutation data not merged with Apollo cache. Error stack:\n", error);
-                        }
-                      }}
+              <Row>
+                <Col lg="12">
+                  <FormGroup>
+                    <label
+                      className="form-control-label"
+                      htmlFor="input-description"
                     >
-                      {(addMovement, { loading, error, data }) => {
-                        if (loading) { return <Spinner color="primary" /> }
-                        if (error) { return <p className="text-danger">An error occurred: entry not added. Please retry in a while.</p> }
-                        
-                        return (
-                          <Button
-                            color="primary"
-                            onClick={() => {
-                              addMovement({
-                                variables: {
-                                  description: description.value,
-                                  amount: parseFloat(amount.value),
-                                  categoryId: categoryId.value,
-                                }
-                              })
-                            }}
-                            disabled={
-                              pristine ||
-                              description.invalid || 
-                              amount.invalid ||
-                              categoryId.invalid
-                            }
-                          >
-                            Confirm
-                          </Button>
-                        )
-                      }}
-                    </Mutation>
-                  </Col>
-                </Row>
+                      Description
+                    </label>
+                    <Input
+                      name="description"
+                      className="form-control-alternative"
+                      placeholder="Some details explaining the nature of the transaction"
+                      type="text"
+                      value={values.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      invalid={errors.description && touched.description}
+                    />
+                    <FormFeedback>Description field cannot be empty!</FormFeedback>
+                  </FormGroup>
+                </Col>
+              </Row>
 
-              </div>
-            </Form>
-          </CardBody>
-        </Card>
-      </Col>
-          
-    );
-  }
+              <Row>
+                <Col lg="4">
+                  <FormGroup>
+                    <label
+                      className="form-control-label"
+                      htmlFor="input-amount"
+                    >
+                      Amount
+                    </label>
+
+                    <InputGroup style={getShadow()}>
+                        <Input
+                          name="amount"
+                          placeholder="1234.56"
+                          type="text"
+                          className="border-0"
+                          value={values.amount}
+                          onChange={handleChange}
+                          onFocus={onFocus}
+                          onBlur={(e) => {
+                            handleBlur(e);
+                            onBlur();
+                          }}
+                          invalid={errors.amount && touched.amount}
+                        />
+                        <InputGroupAddon addonType="append">
+                          <InputGroupText className="border-0 rounded-right">€</InputGroupText>
+                        </InputGroupAddon>
+                        <FormFeedback style={{ position: 'absolute', bottom: '-25px' }}>Amount field must be a number!</FormFeedback>
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+
+                <Col lg="4">
+                  <FormGroup>
+                    <label
+                      className="form-control-label"
+                      htmlFor="input-category"
+                    >
+                      Category
+                    </label>
+                    <Input
+                      name="categoryId"
+                      className="form-control-alternative"
+                      placeholder="Category"
+                      type="select"
+                      value={values.categoryId}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      invalid={errors.categoryId && touched.categoryId}
+                    >
+                      <option value=''>Select category</option>
+                      
+                      <Query query={_getCategories} fetchPolicy='cache-and-network'>
+                        {({ loading, error, data }) => {
+                          if (loading || error ) { return null } 
+
+                          return data.categories.map((item, key) => <option value={item.id} {...{key}}>{item.name}</option>)
+
+                        }}
+                      </Query>
+
+                    </Input>
+                    <FormFeedback>Category field cannot be empty!</FormFeedback>
+                  </FormGroup>
+                </Col>
+                <Col lg="4">
+                  <FormGroup>
+                    <label
+                      className="form-control-label"
+                      htmlFor="input-date"
+                    >
+                      Date
+                    </label>
+                    <Input
+                      className="form-control-alternative"
+                      id="input-postal-date"
+                      placeholder="Not yet available"
+                      type="text"
+                      disabled
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+
+              {/* <hr class="my-4" /> */}
+
+              <Row>
+                <Col className="text-right mt-5">
+                  <Submit {...{values}} {...{isValid}} {...{_changeRoute}} />
+                </Col>
+              </Row>
+
+            </div>
+          </Form>
+        </CardBody>
+      </Card>
+    </Col>
+        
+  );
+
 }
 
-export default FormCard;
+const formikOpt = {
+  mapPropsToValues: () => ({
+    description: '',
+    amount: '',
+    categoryId: '',
+  }),
+  validate: values => {
+    const errors = {};
+    if (values.description === '') {
+      errors.description = true
+    }
+    if (!/[+-]?([0-9]*[.])?[0-9]+/g.test(values.amount)) {
+      errors.amount = true
+    }
+    if (values.categoryId === '') {
+      errors.categoryId = true
+    }
+    return errors;
+  },
+}
+
+export default withFormik(formikOpt)(FormCard);
