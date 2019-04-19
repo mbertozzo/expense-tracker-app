@@ -24,16 +24,17 @@ module.exports = {
         amount: amount,
         categoryId: categoryId
       }),
-    updateMovement: (parent, { description, amount, id }, { db }, info) =>
+    updateMovement: (parent, { description, amount, categoryId, id }, { db }, info) =>
       db.movement.update({
         description: description,
-        amount: amount
+        amount: amount,
+        categoryId: categoryId
       },
       {
         where: {
           id: id
         }
-      }),
+      }).then(() => db.movement.findByPk(id)),
     deleteMovement: (parent, {id}, { db }, info) =>
       db.movement.destroy({
         where: {

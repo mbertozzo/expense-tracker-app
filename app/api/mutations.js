@@ -18,6 +18,31 @@ export const _addMovement = gql `
   }
 `;
 
+export const _updateMovement = gql `
+  mutation updateMovement(
+    $id: ID!
+    $description: String!,
+    $amount: Float!,
+    $categoryId: ID!,
+  ) {
+    updateMovement(
+      id: $id
+      description: $description,
+      amount: $amount,
+      categoryId: $categoryId,
+    ) {
+      id
+      description
+      amount
+      category {
+        id
+        name
+      }
+    }
+  } 
+`;
+
+
 export const _deleteMovement = gql `
   mutation deleteMovement(
     $id: ID!

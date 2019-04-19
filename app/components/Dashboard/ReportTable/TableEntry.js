@@ -23,9 +23,10 @@ import {
 } from "reactstrap";
 
 class TableEntry extends React.Component {
+
   render() {
 
-    const { id, description, amount, category: { name: categoryName } } = this.props;
+    const { id, description, amount, category: { name: categoryName }, _changeRoute } = this.props;
 
     let color, icon = '';
     if (amount > 0) {
@@ -60,7 +61,6 @@ class TableEntry extends React.Component {
           <UncontrolledDropdown>
             <DropdownToggle
               className="btn-icon-only text-light"
-              href="#pablo"
               role="button"
               size="sm"
               color=""
@@ -73,10 +73,9 @@ class TableEntry extends React.Component {
               <DeleteEntry {...{id}} {...{amount}} />
 
               <DropdownItem
-                href="#pablo"
-                onClick={e => e.preventDefault()}
+                onClick={() => _changeRoute(`/edit/${id}`)}
               >
-                Another action
+                Edit entry
               </DropdownItem>
               <DropdownItem
                 href="#pablo"

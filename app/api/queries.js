@@ -7,7 +7,25 @@ query {
     description
     amount
     category {
+      id
       name
+    }
+  }
+}
+`;
+
+export const _getMovement = gql `
+query movement (
+  $id: ID!
+) {
+  movement (
+    id: $id
+  ) {
+    id
+    description
+    amount
+    category {
+      id
     }
   }
 }

@@ -6,7 +6,7 @@ import { Mutation } from 'react-apollo';
 
 import { Button, Spinner } from 'reactstrap';
 
-const Submit = (props) => {
+const Add = (props) => {
 
   const { values, isValid, _changeRoute } = props;
 
@@ -62,4 +62,4 @@ const Submit = (props) => {
 
 }
 
-export default Submit;
+export default Add;

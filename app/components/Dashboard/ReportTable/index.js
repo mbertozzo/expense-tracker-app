@@ -26,7 +26,7 @@ import TableEntry from './TableEntry';
 class ReportTable extends React.Component {
   render() {
 
-    const { data, loading, error } = this.props;
+    const { data, loading, error, _changeRoute } = this.props;
 
     // Create table rows with GraphQL data, show spinner on loading
     // or error message if something fails
@@ -42,7 +42,7 @@ class ReportTable extends React.Component {
     } else if (error) {
       content = <tr><th scope="row"><p className="mb-0">{error.message}</p></th></tr>;
     } else {
-      content = data.movements.map((item, key) => <TableEntry {...{key}} {...item} />);
+      content = data.movements.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute}} />);
     }
 
     return (
