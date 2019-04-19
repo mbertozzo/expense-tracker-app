@@ -39,7 +39,6 @@ const DeleteEntry = (props) => {
       }}
       >
       {(deleteMovement, { loading, error }) => {
-        if (loading) { return <Spinner color="primary" /> }
         if (error) { return <p className="text-danger">An error occurred: entry not added. Please retry in a while.</p> }
         
         return (

@@ -69,20 +69,15 @@ class TableEntry extends React.Component {
               <i className="fas fa-ellipsis-v" />
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
-              
-              <DeleteEntry {...{id}} {...{amount}} />
 
               <DropdownItem
                 onClick={() => _changeRoute(`/edit/${id}`)}
               >
                 Edit entry
               </DropdownItem>
-              <DropdownItem
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                Something else here
-              </DropdownItem>
+              
+              <DeleteEntry {...{id}} {...{amount}} />
+
             </DropdownMenu>
           </UncontrolledDropdown>
         </td>
