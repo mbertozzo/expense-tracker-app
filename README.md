@@ -33,3 +33,6 @@ db.sequelize.sync({ force: true }).then(() => {
 ```
 
 Then, just set `force: false` to append future entries to the existing data.
+
+## Curiosity
+Each version of the app gets the name from a California city.

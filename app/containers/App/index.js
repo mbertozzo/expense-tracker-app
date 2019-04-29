@@ -16,8 +16,7 @@ import Header from 'components/App/Header';
 import Footer from 'components/App/Footer';
 
 // Styles and assets
-import "assets/vendor/nucleo/css/nucleo.css";
-import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 
 

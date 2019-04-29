@@ -31,10 +31,10 @@ class TableEntry extends React.Component {
     let color, icon = '';
     if (amount > 0) {
       color = 'success';
-      icon = 'ni-bold-up';
+      icon = 'fa-chevron-up';
     } else {
       color = 'danger';
-      icon = 'ni-bold-down';
+      icon = 'fa-chevron-down';
     }
 
     return (
@@ -42,7 +42,7 @@ class TableEntry extends React.Component {
       <tr>
         <th scope="row">
           <div className={`icon-sm icon-shape rounded-circle mr-4 text-${color} border border-${color}`}>
-            <i className={`ni ${icon}`} />
+            <i className={`fas ${icon}`} />
           </div>
           <span className="mb-0 text-sm">
             {description}
