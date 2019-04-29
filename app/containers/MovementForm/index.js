@@ -6,8 +6,8 @@ import { FormattedMessage } from 'react-intl';
 import { _getMovement } from 'api/queries';
 import { Query } from 'react-apollo';
 
-import FormCard from 'components/Add/FormCard';
-import SideCard from 'components/Add/SideCard';
+import FormCard from 'components/MovementForm/FormCard';
+import SideCard from 'components/MovementForm/SideCard';
 import Message from 'components/shared/Message/';
 import Loading from 'components/shared/Loading/';
 

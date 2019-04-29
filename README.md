@@ -35,4 +35,5 @@ db.sequelize.sync({ force: true }).then(() => {
 Then, just set `force: false` to append future entries to the existing data.
 
 ## Curiosity
-Each version of the app gets the name from a California city.
+Each version of the app is codenamed after a California city, following an alphabetical order.  
+So here it is, this first, work-in-progress version is called **Avenal**. According to Wikipedia, the name was given by Spanish soldiers and explorers, since the area where the city is located was once covered with wild oats, and "avenal" means oatfield in Spanish.

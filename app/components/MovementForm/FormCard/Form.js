@@ -13,6 +13,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   Row,
+  Spinner,
 } from "reactstrap";
 
 const MovementForm = (props) => {
@@ -109,36 +110,38 @@ const MovementForm = (props) => {
               >
                 Category
               </label>
-              <Input
-                name="categoryId"
-                className="form-control-alternative"
-                placeholder="Category"
-                type="select"
-                value={values.categoryId}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                invalid={errors.categoryId && touched.categoryId}
-              >
-                <option value=''>Select category</option>
-                
-                <Query query={_getCategories} fetchPolicy='cache-and-network'>
-                  {({ loading, error, data }) => {
-                    if (loading || error ) { return null } 
+              <Query query={_getCategories} fetchPolicy='cache-and-network'>
+                {({ loading, error, data }) => {
+                  if (loading) { return <Spinner color="primary" style={{ display: 'block' }} /> } 
+                  if (error) { return <p className="text-danger">Error: Can't load category data.</p> } 
 
-                    return data.categories.map((item, key) => (
-                      <option
-                        value={item.id}
-                        // trick to show current category when editing | needs fixing
-                        selected={item.id === values.categoryId}
-                        {...{key}}>
-                          {item.name}
-                        </option>
-                    ))
-
-                  }}
-                </Query>
-
-              </Input>
+                  const options = data.categories.map((item, key) => (
+                    <option
+                      value={item.id}
+                      // trick to show current category when editing | needs fixing
+                      selected={item.id === values.categoryId}
+                      {...{key}}>
+                        {item.name}
+                      </option>
+                  ))
+             
+                  return (
+                    <Input
+                      name="categoryId"
+                      className="form-control-alternative"
+                      placeholder="Category"
+                      type="select"
+                      value={values.categoryId}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      invalid={errors.categoryId && touched.categoryId}
+                    >
+                      <option value=''>Select category</option>
+                      {options}                    
+                    </Input>
+                  )
+                }}
+              </Query>
               <FormFeedback>Category field cannot be empty!</FormFeedback>
             </FormGroup>
           </Col>
