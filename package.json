@@ -4,7 +4,7 @@
   "description": "A fullstack app working as an expense manager and tracker.",
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/mbertozzo/expense-tracker-app"
   },
   "engines": {
     "npm": ">=5",
@@ -99,7 +99,7 @@
     "redux-saga": "0.16.2",
     "reselect": "4.0.0",
     "sanitize.css": "4.1.0",
-    "sequelize": "^5.2.10",
+    "sequelize": "^5.8.0",
     "styled-components": "4.0.2",
     "warning": "4.0.2"
   },
@@ -146,16 +146,16 @@
     "file-loader": "2.0.0",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.2.0",
-    "image-webpack-loader": "4.4.0",
+    "image-webpack-loader": "^4.6.0",
     "imports-loader": "0.8.0",
-    "jest-cli": "23.6.0",
+    "jest-cli": "24.7.1",
     "jest-styled-components": "6.2.2",
     "lint-staged": "7.3.0",
     "lodash.random": "^3.2.0",
     "lodash.times": "^4.3.2",
     "ngrok": "3.1.0",
     "node-plop": "0.16.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.12.0",
     "null-loader": "0.1.1",
     "offline-plugin": "5.0.5",
     "plop": "2.1.0",
@@ -168,7 +168,7 @@
     "sass-loader": "^7.1.0",
     "shelljs": "^0.8.2",
     "style-loader": "0.23.1",
-    "stylelint": "9.6.0",
+    "stylelint": "^10.0.1",
     "stylelint-config-recommended": "2.1.0",
     "stylelint-config-styled-components": "0.1.1",
     "stylelint-processor-styled-components": "1.5.0",
