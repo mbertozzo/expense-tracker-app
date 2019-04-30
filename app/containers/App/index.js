@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet';
 // Containers
 import Dashboard from 'containers/Dashboard';
 import MovementForm from 'containers/MovementForm';
+import CategoryReport from 'containers/CategoryReport';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 //Components
@@ -34,6 +35,7 @@ const App = (props) => {
 
       <Switch>
         <Route exact path="/" render={(routeProps) => <Dashboard {...routeProps} {...props} />} />
+        <Route path="/cat/:id" render={(routeProps) => <CategoryReport {...props} {...routeProps} />} />
         <Route path="/:path(add|edit)/:id?" render={(routeProps) => <MovementForm {...routeProps} {...props} />} />
         <Route component={NotFoundPage} />
       </Switch>

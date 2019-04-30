@@ -40,6 +40,30 @@ export const _getCategories = gql `
   }
 `;
 
+// Category name is repeated in query to be able to
+// reuse movements table component. Future refactor
+// may optimize data management.
+export const _getCategoryMovements = gql `
+  query category (
+    $id: ID!
+  ) {
+    category (
+      id: $id
+    ) {
+      name
+      movements {
+        id
+        description
+        amount
+        category {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const _getBalance = gql `
   query {
     balance

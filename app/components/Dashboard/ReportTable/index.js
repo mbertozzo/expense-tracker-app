@@ -1,19 +1,14 @@
 import React from "react";
 
+import { AddButton, ViewAllButton } from './Buttons';
+
 import {
-  Button,
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
   Pagination,
   PaginationItem,
   PaginationLink,
-  Progress,
   Spinner,
   Table,
   Container,
@@ -26,7 +21,7 @@ import TableEntry from './TableEntry';
 class ReportTable extends React.Component {
   render() {
 
-    const { data, loading, error, _changeRoute } = this.props;
+    const { data, loading, error, isCategoryReport = false, _changeRoute } = this.props;
 
     // Create table rows with GraphQL data, show spinner on loading
     // or error message if something fails
@@ -42,7 +37,11 @@ class ReportTable extends React.Component {
     } else if (error) {
       content = <tr><th scope="row"><p className="mb-0">{error.message}</p></th></tr>;
     } else {
-      content = data.movements.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute}} />);
+      if (isCategoryReport) {
+        content = data.category.movements.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute, isCategoryReport}} />);  
+      } else {
+        content = data.movements.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute, isCategoryReport}} />);
+      }
     }
 
     return (
@@ -55,16 +54,18 @@ class ReportTable extends React.Component {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Latest movements</h3>
+                    <h3 className="mb-0">
+                      {(isCategoryReport && !loading) 
+                        ? `Movements for "${data.category.name}"`
+                        : 'Latest movements'
+                      }
+                    </h3>
                   </div>
                   <div className="col text-right">
-                    <Button
-                      color="primary"
-                      onClick={() => this.props._changeRoute('/add')}
-                      size="sm"
-                    >
-                      Add New
-                    </Button>
+                    {(isCategoryReport)
+                      ? <ViewAllButton {...{_changeRoute}} />
+                      : <AddButton {...{_changeRoute}} />
+                    }
                   </div>
                 </Row>
               </CardHeader>
