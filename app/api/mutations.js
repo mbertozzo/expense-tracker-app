@@ -56,11 +56,11 @@ export const _deleteMovement = gql `
 export const _addCategory = gql `
   mutation createCategory(
     $name: String!,
-    $description: String!,
+    $color: String!,
   ) {
     createCategory(
       name: $name,
-      description: $description,
+      color: $color,
     ) {
       id
       name

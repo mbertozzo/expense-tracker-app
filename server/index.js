@@ -61,7 +61,7 @@ db.sequelize.sync({ force: true }).then(() => {
   db.category.bulkCreate(
     times(10, () => ({
       name: faker.lorem.slug(),
-      description: faker.lorem.sentence()
+      color: 'red'
     }))
   );
   // populate post table with dummy data

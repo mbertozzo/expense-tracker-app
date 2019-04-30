@@ -9,6 +9,7 @@ query {
     category {
       id
       name
+      color
     }
   }
 }
@@ -58,6 +59,7 @@ export const _getCategoryMovements = gql `
         category {
           id
           name
+          color
         }
       }
     }

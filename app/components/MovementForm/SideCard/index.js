@@ -25,7 +25,7 @@ class SideCard extends Component {
 
     this.state = {
       name: undefined,
-      description: undefined,
+      color: undefined,
       completed: false,
     }
 
@@ -36,7 +36,7 @@ class SideCard extends Component {
     this.setState({ completed: true });
 
     setTimeout(() => {
-      this.setState({ completed: false, name: '', description: '' })
+      this.setState({ completed: false, name: '', color: '' })
     }, 1500);
   }
 
@@ -76,18 +76,29 @@ class SideCard extends Component {
                 <FormGroup>
                   <label
                     className="form-control-label"
-                    htmlFor="input-description"
+                    htmlFor="input-color"
                   >
-                    Description
+                    Color
                   </label>
                   <Input
                     className="form-control-alternative"
-                    id="input-description"
-                    placeholder="Some details about the category"
-                    type="text"
-                    value={this.state.description}
-                    onChange={(e) => this.setState({ description: e.target.value })}
-                  />
+                    id="input-color"
+                    type="select"
+                    value={this.state.color}
+                    onChange={(e) => this.setState({ color: e.target.value })}
+                  >
+                    <option value=''>Select color</option>
+                    <option value='blue'>Blue</option>
+                    <option value='indigo'>Indigo</option>
+                    <option value='purple'>Purple</option>
+                    <option value='pink'>Pink</option>
+                    <option value='red'>Red</option>
+                    <option value='orange'>Orange</option>
+                    <option value='yellow'>Yellow</option>
+                    <option value='green'>Green</option>
+                    <option value='teal'>Teal</option>
+                    <option value='cyan'>Cyan</option>
+                  </Input>
                 </FormGroup>
               </Col>
             </Row>
@@ -128,7 +139,7 @@ class SideCard extends Component {
                           addMovement({
                             variables: {
                               name: this.state.name,
-                              description: this.state.description,
+                              color: this.state.color,
                             }
                           })
                         }}

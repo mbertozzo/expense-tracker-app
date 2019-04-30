@@ -12,7 +12,20 @@ import {
 
 const TableEntry = (props) => {
 
-  const { id, description, amount, category: { id: categoryId , name: categoryName }, _changeRoute, isCategoryReport } = props;
+  const { id, description, amount, category: { id: categoryId , name: categoryName, color: categoryColor }, _changeRoute, isCategoryReport } = props;
+
+  const paletteMap = {
+    blue:    '#5e72e4',
+    indigo:  '#5603ad',
+    purple:  '#8965e0',
+    pink:    '#f3a4b5',
+    red:     '#f5365c',
+    orange:  '#fb6340',
+    yellow:  '#ffd600',
+    green:   '#2dce89',
+    teal:    '#11cdef',
+    cyan:    '#2bffc6',
+  };
 
   let color, icon = '';
   if (amount > 0) {
@@ -39,7 +52,7 @@ const TableEntry = (props) => {
       </td>
       <td>
         <Badge color="" className="badge-dot mr-4">
-          <i className="bg-warning" />
+          <i style={{backgroundColor: paletteMap[categoryColor]}} />
           <span 
             onClick={() => _changeRoute(`/cat/${categoryId}`)}
             style={{cursor: 'pointer'}}

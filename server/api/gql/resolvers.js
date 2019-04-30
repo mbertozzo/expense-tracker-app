@@ -41,10 +41,10 @@ module.exports = {
           id: id
         }
       }),
-    createCategory: (parent, { name, description }, { db }, info) =>
+    createCategory: (parent, { name, color }, { db }, info) =>
       db.category.create({
         name: name,
-        description: description,
+        color: color,
       }),
   }
 };
