@@ -25,6 +25,7 @@ query movement (
     id
     description
     amount
+    issue_date
     category {
       id
     }

@@ -58,11 +58,12 @@ const FormCard = (props) => {
 
 const formikOpt = {
   mapPropsToValues: (props) => {
-    const { formInit: { description = '', amount = '', category: { id: categoryId = '' } = {} } = {} } = props;
+    const { formInit: { description = '', amount = '', issue_date = '', category: { id: categoryId = '' } = {} } = {} } = props;
 
     return ({
       description,
       amount,
+      issue_date,
       categoryId,
     })
   },
@@ -73,6 +74,9 @@ const formikOpt = {
     }
     if (!/[+-]?([0-9]*[.])?[0-9]+/g.test(values.amount)) {
       errors.amount = true
+    }
+    if (values.date === '') {
+      errors.date = true
     }
     if (values.categoryId === '') {
       errors.categoryId = true

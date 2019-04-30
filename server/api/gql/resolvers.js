@@ -18,16 +18,18 @@ module.exports = {
     revenues: (parent, args, { db }, info) => db.movement.sum('amount', { where: { amount: { [Op.gt]: 0 } } }),
   },
   Mutation: {
-    createMovement: (parent, { description, amount, categoryId }, { db }, info) =>
+    createMovement: (parent, { description, amount, issue_date, categoryId }, { db }, info) =>
       db.movement.create({
         description: description,
         amount: amount,
+        issue_date: issue_date,
         categoryId: categoryId
       }),
-    updateMovement: (parent, { description, amount, categoryId, id }, { db }, info) =>
+    updateMovement: (parent, { description, amount, issue_date, categoryId, id }, { db }, info) =>
       db.movement.update({
         description: description,
         amount: amount,
+        issue_date: issue_date,
         categoryId: categoryId
       },
       {

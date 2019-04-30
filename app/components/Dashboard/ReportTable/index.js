@@ -21,7 +21,7 @@ import TableEntry from './TableEntry';
 class ReportTable extends React.Component {
   render() {
 
-    const { data, loading, error, isCategoryReport = false, _changeRoute } = this.props;
+    const { data, data: { category: { name }  = {} } = {}, loading, error, isCategoryReport = false, _changeRoute } = this.props;
 
     // Create table rows with GraphQL data, show spinner on loading
     // or error message if something fails
@@ -56,7 +56,7 @@ class ReportTable extends React.Component {
                   <div className="col">
                     <h3 className="mb-0">
                       {(isCategoryReport && !loading) 
-                        ? `Movements for "${data.category.name}"`
+                        ? `Movements for: ${name}`
                         : 'Latest movements'
                       }
                     </h3>

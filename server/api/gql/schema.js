@@ -9,6 +9,7 @@ module.exports = `
     id: ID!
     description: String
     amount: Float!
+    issue_date: String
     categoryId: ID!
     category: Category!
   }

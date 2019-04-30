@@ -69,6 +69,7 @@ db.sequelize.sync({ force: true }).then(() => {
     times(10, () => ({
       description: faker.lorem.sentence(),
       amount: faker.random.number(),
+      issue_date: faker.date.recent(),
       categoryId: random(1, 10)
     }))
   );
