@@ -75,8 +75,8 @@ const formikOpt = {
     if (!/[+-]?([0-9]*[.])?[0-9]+/g.test(values.amount)) {
       errors.amount = true
     }
-    if (values.date === '') {
-      errors.date = true
+    if (values.issue_date === '') {
+      errors.issue_date = true
     }
     if (values.categoryId === '') {
       errors.categoryId = true

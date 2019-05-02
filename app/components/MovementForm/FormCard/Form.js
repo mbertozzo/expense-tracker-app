@@ -20,9 +20,7 @@ import {
 
 const MovementForm = (props) => {
 
-  const { values, touched, errors, handleChange, handleBlur, isValid } = props;
-
-  console.log('VALUEs', values)
+  const { values, touched, errors, handleChange, handleBlur, isValid, setFieldTouched } = props;
 
   const [focused, setFocused] = useState(false);
   
@@ -160,9 +158,11 @@ const MovementForm = (props) => {
               {/* Check https://github.com/KaiHotz/react-formik-ui#datepicker */}
               <Datepicker
                 name="issue_date"
-                className="form-control form-control-alternative"
-                placeholder="Select value"
+                className={`form-control form-control-alternative ${errors.issue_date && touched.issue_date && 'is-invalid'}`}
+                placeholder="Select a date"
+                onBlur={() => setFieldTouched('issue_date', true)}
               />
+              <FormFeedback>Date field cannot be empty!</FormFeedback>
             </FormGroup>
           </Col>
         </Row>

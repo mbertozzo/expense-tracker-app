@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       issue_date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         get: function() {
           // return moment(this.getDataValue("date")).format("MM/DD/YYYY");
           return moment.utc(this.getDataValue("issue_date")).format();
