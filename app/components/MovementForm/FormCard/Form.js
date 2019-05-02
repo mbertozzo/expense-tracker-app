@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 import { _getCategories } from 'api/queries';
 import { Query } from 'react-apollo';
 
-// if upgrading to v2 of date-fns --> import parseISO from 'date-fns/parseISO';
-import parse from 'date-fns/parse';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { Datepicker } from 'react-formik-ui';
 
 import {
   Col,
@@ -160,23 +157,11 @@ const MovementForm = (props) => {
               >
                 Date
               </label>
-              {/* <Input
+              {/* Check https://github.com/KaiHotz/react-formik-ui#datepicker */}
+              <Datepicker
                 name="issue_date"
-                className="form-control-alternative"
-                placeholder="Date when the transaction occurred"
-                type="text"
-                value={new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(values.date)}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                invalid={errors.date && touched.date}
-              /> */}
-
-              <DatePicker
-                name="issue_date"
-                selected={ parse(values.issue_date) }
-                onChange={ e => handleChange(e) }
-                name="startDate"
-                // dateFormat="MM/DD/YYYY"
+                className="form-control form-control-alternative"
+                placeholder="Select value"
               />
             </FormGroup>
           </Col>

@@ -47,6 +47,7 @@ const Add = (props) => {
                 variables: {
                   description: values.description,
                   amount: parseFloat(values.amount),
+                  issue_date: values.issue_date,
                   categoryId: values.categoryId,
                 }
               })

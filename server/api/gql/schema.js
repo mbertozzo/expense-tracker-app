@@ -23,8 +23,8 @@ module.exports = `
     revenues: Float!
   }
   type Mutation {
-    createMovement(description: String, amount:Float!, categoryId: ID!): Movement!
-    updateMovement(id: ID!, description: String, amount:Float!, categoryId: ID!): Movement!
+    createMovement(description: String, amount:Float!, issue_date: String, categoryId: ID!): Movement!
+    updateMovement(id: ID!, description: String, amount:Float!, issue_date: String, categoryId: ID!): Movement!
     deleteMovement(id: ID!): Int!
     createCategory(name: String!,  color: String!): Category!
   }
