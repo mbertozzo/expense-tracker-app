@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { _getMovements, _getBalance, _getExpenses, _getRevenues } from 'api/queries';
+import { _getMovements, _getBalance, _getExpenses, _getRevenues, _getPerformance } from 'api/queries';
 import { _updateMovement } from 'api/mutations';
 import { Mutation } from 'react-apollo';
 
@@ -14,7 +14,7 @@ const Add = (props) => {
     <Mutation 
       mutation={_updateMovement}
       onCompleted={() => _changeRoute('/')}
-      refetchQueries={() => [{ query: _getBalance }, { query: _getExpenses }, { query: _getRevenues }]}
+      refetchQueries={() => [{ query: _getBalance }, { query: _getExpenses }, { query: _getRevenues }, { query: _getPerformance }]}
     >
       {(updateMovement, { loading, error, data }) => {
         if (loading) { return <Spinner color="primary" /> }

@@ -84,3 +84,9 @@ export const _getRevenues = gql `
     revenues
   }
 `;
+
+export const _getPerformance = gql `
+  query {
+    performance
+  }
+`;

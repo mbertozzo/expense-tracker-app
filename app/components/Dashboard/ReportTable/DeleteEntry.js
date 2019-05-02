@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { _getMovements, _getCategoryMovements, _getBalance, _getExpenses, _getRevenues } from 'api/queries';
+import { _getMovements, _getCategoryMovements, _getBalance, _getExpenses, _getRevenues, _getPerformance } from 'api/queries';
 import { _deleteMovement } from 'api/mutations';
 import { Mutation } from 'react-apollo';
 
@@ -13,6 +13,7 @@ const DeleteEntry = (props) => {
   return (
     <Mutation 
       mutation={_deleteMovement}
+      refetchQueries={() => [{ query: _getPerformance }]}
       update={(store, { data: { deleteMovement } }) => {
 
         // if removing item from the table showing movements for a single category

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { _getBalance, _getRevenues, _getExpenses } from 'api/queries';
+import { _getBalance, _getRevenues, _getExpenses, _getPerformance } from 'api/queries';
 import { Query } from 'react-apollo';
 
 import { Card, CardBody, CardTitle, Col, Container, Row, Spinner } from "reactstrap";
@@ -146,7 +146,17 @@ class Header extends React.Component {
                             Performance
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            49,65%
+                            
+                            <Query query={_getPerformance} fetchPolicy='cache-and-network'>
+                              {({ loading, error, data }) => {
+                                if (loading ) { return <Spinner color="primary" /> }
+                                if ( error ) { return <p className="text-danger">Error fetching data</p> }
+
+                                return data.performance + '%';
+
+                              }}
+                            </Query>
+
                           </span>
                         </div>
                         <Col className="col-auto">

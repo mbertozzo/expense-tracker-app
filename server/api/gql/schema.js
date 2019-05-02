@@ -21,6 +21,7 @@ module.exports = `
     balance: Float!
     expenses: Float!
     revenues: Float!
+    performance: Float!
   }
   type Mutation {
     createMovement(description: String, amount:Float!, issue_date: String, categoryId: ID!): Movement!

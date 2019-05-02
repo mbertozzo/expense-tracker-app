@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { _getBalance, _getExpenses, _getRevenues } from 'api/queries';
+import { _getBalance, _getExpenses, _getRevenues, _getPerformance } from 'api/queries';
 import { _addMovement } from 'api/mutations';
 import { Mutation } from 'react-apollo';
 
@@ -14,6 +14,7 @@ const Add = (props) => {
     <Mutation 
       mutation={_addMovement}
       onCompleted={() => _changeRoute('/')}
+      refetchQueries={() => [{ query: _getPerformance }]}
       update={(store, { data: { createMovement } }) => {
         const cachedBalance = store.readQuery({ query: _getBalance });
         const cachedExpenses = store.readQuery({ query: _getExpenses });
