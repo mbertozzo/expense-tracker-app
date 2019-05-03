@@ -13,12 +13,16 @@ module.exports = `
     categoryId: ID!
     category: Category!
   }
+  type Balance {
+    value: Float!
+    trend: Float!
+  }
   type Query {
     movements: [Movement!]!
     movement(id: ID!): Movement
     category(id: ID!): Category
     categories: [Category!]!
-    balance: Float!
+    balance: Balance!
     expenses: Float!
     revenues: Float!
     performance: Float!

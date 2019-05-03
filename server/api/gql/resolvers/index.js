@@ -1,6 +1,8 @@
-const moment = require('moment');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
+const getBalance = require('./balance');
+const getPerformance = require('./performance');
 
 module.exports = {
   Category: {
@@ -14,50 +16,10 @@ module.exports = {
     categories: (parent, args, { db }, info) => db.category.findAll(),
     movement: (parent, { id }, { db }, info) => db.movement.findByPk(id),
     category: (parent, { id }, { db }, info) => db.category.findByPk(id),
-    balance: (parent, args, { db }, info) => db.movement.sum('amount'),
+    balance: (parent, args, { db }, info) => getBalance(db),
     expenses: (parent, args, { db }, info) => db.movement.sum('amount', { where: { amount: { [Op.lt]: 0 } } }),
     revenues: (parent, args, { db }, info) => db.movement.sum('amount', { where: { amount: { [Op.gt]: 0 } } }),
-    performance: (parent, args, { db }, info) => {
-      const monthlyExpenses = db.movement.sum('amount',
-        { where:
-          {
-            [Op.and]: {
-              amount: { [Op.lt]: 0 },
-              issue_date: {
-                [Op.and]: 
-                  { 
-                    [Op.lte]: moment().endOf('day'),
-                    [Op.gte]: moment().subtract(1, 'month').startOf('day')
-                  }
-              }
-            }
-          }
-        }
-      );
-      const monthlyRevenues = db.movement.sum('amount',
-        { where:
-          {
-            [Op.and]: {
-              amount: { [Op.gt]: 0 },
-              issue_date: {
-                [Op.and]: 
-                  { 
-                    [Op.lte]: moment().endOf('day'),
-                    [Op.gte]: moment().subtract(1, 'month').startOf('day')
-                  }
-              }
-            }
-          }
-        }
-      );
-
-      return Promise
-        .all([monthlyExpenses, monthlyRevenues])
-        .then(responses => {
-          const percentage = (responses[0]*100)/responses[1];
-          return Math.abs(percentage.toFixed(2));
-        });
-    },
+    performance: (parent, args, { db }, info) => getPerformance(db),
   },
   Mutation: {
     createMovement: (parent, { description, amount, issue_date, categoryId }, { db }, info) =>

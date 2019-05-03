@@ -11,7 +11,7 @@ const times = require('lodash').times;
 const random = require('lodash').random;
 
 const typeDefs = require('./api/gql/schema');
-const resolvers = require('./api/gql/resolvers');
+const resolvers = require('./api/gql/resolvers/index');
 const db = require('./api/models');
 
 const argv = require('./argv');

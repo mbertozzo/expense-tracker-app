@@ -69,7 +69,10 @@ export const _getCategoryMovements = gql `
 
 export const _getBalance = gql `
   query {
-    balance
+    balance {
+      value
+      trend
+    }
   }
 `;
 
