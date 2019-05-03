@@ -13,7 +13,7 @@ module.exports = `
     categoryId: ID!
     category: Category!
   }
-  type Balance {
+  type Report {
     value: Float!
     trend: Float!
   }
@@ -22,9 +22,9 @@ module.exports = `
     movement(id: ID!): Movement
     category(id: ID!): Category
     categories: [Category!]!
-    balance: Balance!
-    expenses: Float!
-    revenues: Float!
+    balance: Report!
+    expenses: Report!
+    revenues: Report!
     performance: Float!
   }
   type Mutation {

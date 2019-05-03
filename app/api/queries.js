@@ -78,13 +78,19 @@ export const _getBalance = gql `
 
 export const _getExpenses = gql `
   query {
-    expenses
+    expenses {
+      value
+      trend
+    }
   }
 `;
 
 export const _getRevenues = gql `
   query {
-    revenues
+    revenues {
+      value
+      trend
+    }
   }
 `;
 

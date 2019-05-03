@@ -2,6 +2,8 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 const getBalance = require('./balance');
+const getExpenses = require('./expenses');
+const getRevenues = require('./revenues');
 const getPerformance = require('./performance');
 
 module.exports = {
@@ -17,8 +19,8 @@ module.exports = {
     movement: (parent, { id }, { db }, info) => db.movement.findByPk(id),
     category: (parent, { id }, { db }, info) => db.category.findByPk(id),
     balance: (parent, args, { db }, info) => getBalance(db),
-    expenses: (parent, args, { db }, info) => db.movement.sum('amount', { where: { amount: { [Op.lt]: 0 } } }),
-    revenues: (parent, args, { db }, info) => db.movement.sum('amount', { where: { amount: { [Op.gt]: 0 } } }),
+    expenses: (parent, args, { db }, info) => getExpenses(db),
+    revenues: (parent, args, { db }, info) => getRevenues(db),
     performance: (parent, args, { db }, info) => getPerformance(db),
   },
   Mutation: {
