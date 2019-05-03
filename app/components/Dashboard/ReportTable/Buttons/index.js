@@ -1,4 +1,9 @@
-import AddButton from './AddButton';
-import ViewAllButton from './ViewAllButton';
+import Add from './AddButton';
+import ViewAll from './ViewAllButton';
 
-export { AddButton, ViewAllButton }
+const Button = {
+  Add,
+  ViewAll
+}
+
+export default Button;

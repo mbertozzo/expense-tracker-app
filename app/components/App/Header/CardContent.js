@@ -6,7 +6,7 @@ const CardContent = (props) => {
 
   const { title, value, icon, iconBackground, trend, type } = props;
 
-  let color, arrow;
+  let color, arrow, trendDetails;
 
   if (type === 'invertedTrend') {
     if (trend > 0) {
@@ -26,7 +26,18 @@ const CardContent = (props) => {
     }
   }
 
-
+  if (type === 'percentage') {
+    trendDetails = <span className="text-nowrap">Expenses on revenues in the last month</span>;
+  } else {
+    trendDetails = (
+      <>
+        <span className={`${color} mr-2`}>
+          <i className={`fa ${arrow}`} /> {trend}%
+        </span>
+        <span className="text-nowrap">Since last month</span>
+      </>
+    )
+  }
 
   return (
     <CardBody>
@@ -50,19 +61,7 @@ const CardContent = (props) => {
         </Col>
       </Row>
       <p className="mt-3 mb-0 text-muted text-sm">
-        {
-          type === 'percentage'
-            ? <span className="text-nowrap">Expenses on revenues in the last month</span>
-            : (
-              <>
-              <span className={`${color} mr-2`}>
-                <i className={`fa ${arrow}`} /> {trend}%
-              </span>
-              <span className="text-nowrap">Since last month</span>
-              </>
-            )
-        }
-        
+        {trendDetails}        
       </p>
     </CardBody>
   )

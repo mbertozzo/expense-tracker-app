@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AddButton, ViewAllButton } from './Buttons';
+import Button from './Buttons/';
 
 import {
   Card,
@@ -63,8 +63,8 @@ class ReportTable extends React.Component {
                   </div>
                   <div className="col text-right">
                     {(isCategoryReport)
-                      ? <ViewAllButton {...{_changeRoute}} />
-                      : <AddButton {...{_changeRoute}} />
+                      ? <Button.ViewAll {...{_changeRoute}} />
+                      : <Button.Add {...{_changeRoute}} />
                     }
                   </div>
                 </Row>
