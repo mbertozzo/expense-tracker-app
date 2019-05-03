@@ -1,19 +1,32 @@
 import React from 'react';
 
-import { Card, CardBody, CardTitle, Col, Container, Row, Spinner } from "reactstrap";
+import { CardBody, CardTitle, Col, Row } from "reactstrap";
 
 const CardContent = (props) => {
 
-  const { title, value, icon, iconBackground, trend } = props;
+  const { title, value, icon, iconBackground, trend, type } = props;
 
   let color, arrow;
-  if (trend >= 0) {
-    color = 'text-success';
-    arrow = 'fa-arrow-up';
+
+  if (type === 'invertedTrend') {
+    if (trend > 0) {
+      color = 'text-danger';
+      arrow = 'fa-arrow-up';
+    } else {
+      color = 'text-success';
+      arrow = 'fa-arrow-down';
+    }  
   } else {
-    color = 'text-danger';
-    arrow = 'fa-arrow-down';
+    if (trend >= 0) {
+      color = 'text-success';
+      arrow = 'fa-arrow-up';
+    } else {
+      color = 'text-danger';
+      arrow = 'fa-arrow-down';
+    }
   }
+
+
 
   return (
     <CardBody>
@@ -26,7 +39,8 @@ const CardContent = (props) => {
             {title}
           </CardTitle>
           <span className="h2 font-weight-bold mb-0">
-            {value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}     
+            {value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            {type === 'percentage' && '%'}   
           </span>
         </div>
         <Col className="col-auto">
@@ -36,10 +50,19 @@ const CardContent = (props) => {
         </Col>
       </Row>
       <p className="mt-3 mb-0 text-muted text-sm">
-        <span className={`${color} mr-2`}>
-          <i className={`fa ${arrow}`} /> {trend}%
-        </span>{" "}
-        <span className="text-nowrap">Since last month</span>
+        {
+          type === 'percentage'
+            ? <span className="text-nowrap">Expenses on revenues in the last month</span>
+            : (
+              <>
+              <span className={`${color} mr-2`}>
+                <i className={`fa ${arrow}`} /> {trend}%
+              </span>
+              <span className="text-nowrap">Since last month</span>
+              </>
+            )
+        }
+        
       </p>
     </CardBody>
   )

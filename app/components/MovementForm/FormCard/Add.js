@@ -14,27 +14,7 @@ const Add = (props) => {
     <Mutation 
       mutation={_addMovement}
       onCompleted={() => _changeRoute('/')}
-      refetchQueries={() => [{ query: _getPerformance }]}
-      update={(store, { data: { createMovement } }) => {
-        const cachedBalance = store.readQuery({ query: _getBalance });
-        const cachedExpenses = store.readQuery({ query: _getExpenses });
-        const cachedRevenues = store.readQuery({ query: _getRevenues });
-    
-        try{
-          cachedBalance.balance = (cachedBalance.balance + createMovement.amount)
-          store.writeQuery({ query: _getBalance, data: cachedBalance});
-
-          if (createMovement.amount > 0) {
-            cachedRevenues.revenues = (cachedRevenues.revenues + createMovement.amount)
-            store.writeQuery({ query: _getRevenues, data: cachedRevenues })
-          } else {
-            cachedExpenses.expenses = (cachedExpenses.expenses + createMovement.amount)
-            store.writeQuery({ query: _getExpenses, data: cachedExpenses })
-          }
-        } catch (error) {
-          console.log("Mutation data not merged with Apollo cache. Error stack:\n", error);
-        }
-      }}
+      refetchQueries={() => [{ query: _getBalance }, { query: _getExpenses }, { query: _getRevenues }, { query: _getPerformance }]}
     >
       {(addMovement, { loading, error, data }) => {
         if (loading) { return <Spinner color="primary" /> }

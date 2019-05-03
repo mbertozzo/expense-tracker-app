@@ -13,7 +13,7 @@ const DeleteEntry = (props) => {
   return (
     <Mutation 
       mutation={_deleteMovement}
-      refetchQueries={() => [{ query: _getPerformance }]}
+      refetchQueries={() => [{ query: _getBalance }, { query: _getExpenses }, { query: _getRevenues }, { query: _getPerformance }]}
       update={(store, { data: { deleteMovement } }) => {
 
         // if removing item from the table showing movements for a single category
@@ -36,26 +36,6 @@ const DeleteEntry = (props) => {
           } catch (error) {
             console.log("Mutation data not merged with Apollo cache. Error stack:\n", error);
           }
-        }
-
-        // update balance, expense and revenue amounts        
-        const cachedBalance = store.readQuery({ query: _getBalance });
-        const cachedExpenses = store.readQuery({ query: _getExpenses });
-        const cachedRevenues = store.readQuery({ query: _getRevenues });
-
-        try {
-          const updatedBalance= cachedBalance.balance - amount;
-          store.writeQuery({ query: _getBalance, data: { balance: updatedBalance } });
-          
-          if ( amount > 0 ) {
-            const updatedRevenues = cachedRevenues.revenues - amount;
-            store.writeQuery({ query: _getRevenues, data: { revenues: updatedRevenues } });
-          } else {
-            const updatedExpenses = cachedExpenses.expenses - amount;
-            store.writeQuery({ query: _getExpenses, data: { expenses: updatedExpenses } });
-          }
-        } catch (error) {
-          console.log("Mutation data not merged with Apollo cache. Error stack:\n", error);
         }
       }}
       >
