@@ -13,12 +13,16 @@ module.exports = `
     categoryId: ID!
     category: Category!
   }
+  type Movements {
+    nodes: [Movement!]!
+    totalCount: Int!
+  }
   type Report {
     value: Float!
     trend: Float!
   }
   type Query {
-    movements: [Movement!]!
+    movements(limit: Int, offset: Int): Movements!
     movement(id: ID!): Movement
     category(id: ID!): Category
     categories: [Category!]!

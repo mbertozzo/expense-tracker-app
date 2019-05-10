@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+const getMovements = require('./movements');
 const getBalance = require('./balance');
 const getExpenses = require('./expenses');
 const getRevenues = require('./revenues');
@@ -14,7 +15,7 @@ module.exports = {
     category: (parent, args, context, info) => parent.getCategory(),
   },
   Query: {
-    movements: (parent, args, { db }, info) => db.movement.findAll({ order: [ ['id', 'DESC'] ] }),
+    movements: (parent, { offset = 0, limit = null }, { db }, info) => getMovements(db, offset, limit),
     categories: (parent, args, { db }, info) => db.category.findAll(),
     movement: (parent, { id }, { db }, info) => db.movement.findByPk(id),
     category: (parent, { id }, { db }, info) => db.category.findByPk(id),
