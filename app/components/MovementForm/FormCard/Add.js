@@ -27,7 +27,7 @@ const Add = (props) => {
               addMovement({
                 variables: {
                   description: values.description,
-                  amount: parseFloat(values.amount),
+                  amount: parseFloat(values.amount.replace(/,/g, '.')),
                   issue_date: values.issue_date,
                   categoryId: values.categoryId,
                 }
