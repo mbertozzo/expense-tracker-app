@@ -19,8 +19,6 @@ const TableEntry = (props) => {
     category: { id: categoryId , name: categoryName, color: categoryColor },
     _changeRoute,
     isCategoryReport,
-    currentPage, 
-    pageLimit
   } = props;
 
   const paletteMap = {
@@ -89,7 +87,7 @@ const TableEntry = (props) => {
               Edit entry
             </DropdownItem>
             
-            <DeleteEntry {...{id, amount, isCategoryReport, categoryId, currentPage, pageLimit}} />
+            <DeleteEntry {...{id, amount, isCategoryReport, categoryId}} />
 
           </DropdownMenu>
         </UncontrolledDropdown>

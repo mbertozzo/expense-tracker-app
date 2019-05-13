@@ -65,7 +65,7 @@ class ReportTable extends React.Component {
         const { nodes, totalCount } = data.movements;
         const { currentPage } = this.state;
 
-        content = nodes.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute, isCategoryReport, currentPage, pageLimit}} />);
+        content = nodes.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute, isCategoryReport}} />);
         pagination = <Pagination {...{pageLimit, totalCount, fetchMore, currentPage}} updatePage={this.updateCurrentPage} />
       }
     }
