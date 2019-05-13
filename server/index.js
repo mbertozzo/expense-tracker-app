@@ -66,9 +66,9 @@ db.sequelize.sync({ force: true }).then(() => {
   );
   // populate post table with dummy data
   db.movement.bulkCreate(
-    times(10, () => ({
+    times(103, (index) => ({
       description: faker.lorem.sentence(),
-      amount: faker.random.number(),
+      amount: index,
       issue_date: faker.date.recent(),
       categoryId: random(1, 10)
     }))

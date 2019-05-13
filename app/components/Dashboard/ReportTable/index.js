@@ -1,14 +1,12 @@
 import React from "react";
 
 import Button from './Buttons/';
+import Pagination from './Pagination';
 
 import {
   Card,
   CardHeader,
   CardFooter,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Spinner,
   Table,
   Container,
@@ -19,13 +17,36 @@ import {
 import TableEntry from './TableEntry';
 
 class ReportTable extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentPage: 1,
+    }
+
+    this.updateCurrentPage = this.updateCurrentPage.bind(this);
+  }
+
+  updateCurrentPage(page) {
+    this.setState({currentPage: page})
+  }
+
   render() {
 
-    const { data, data: { category: { name }  = {} } = {}, loading, error, isCategoryReport = false, _changeRoute } = this.props;
+    const { 
+      data,
+      data: { category: { name }  = {} } = {},
+      loading,
+      error,
+      pageLimit,
+      fetchMore,
+      isCategoryReport = false,
+      _changeRoute
+    } = this.props;
 
     // Create table rows with GraphQL data, show spinner on loading
     // or error message if something fails
-    let content = null;
+    let content, pagination = null;
     if (loading) {
       content = (
         <tr>
@@ -40,7 +61,12 @@ class ReportTable extends React.Component {
       if (isCategoryReport) {
         content = data.category.movements.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute, isCategoryReport}} />);  
       } else {
-        content = data.movements.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute, isCategoryReport}} />);
+
+        const { nodes, totalCount } = data.movements;
+        const { currentPage } = this.state;
+
+        content = nodes.map((item, key) => <TableEntry {...{key}} {...item} {...{_changeRoute, isCategoryReport, currentPage, pageLimit}} />);
+        pagination = <Pagination {...{pageLimit, totalCount, fetchMore, currentPage}} updatePage={this.updateCurrentPage} />
       }
     }
 
@@ -86,54 +112,7 @@ class ReportTable extends React.Component {
               </Table>
               <CardFooter className="py-4">
                 <nav aria-label="...">
-                  <Pagination
-                    className="pagination justify-content-end mb-0"
-                    listClassName="justify-content-end mb-0"
-                  >
-                    <PaginationItem className="disabled">
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        tabIndex="-1"
-                      >
-                        <i className="fas fa-angle-left" />
-                        <span className="sr-only">Previous</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem className="active">
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        1
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        2 <span className="sr-only">(current)</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        3
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        <i className="fas fa-angle-right" />
-                        <span className="sr-only">Next</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                  </Pagination>
+                  {pagination}
                 </nav>
               </CardFooter>
             </Card>

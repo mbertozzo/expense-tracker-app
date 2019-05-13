@@ -12,7 +12,16 @@ import {
 
 const TableEntry = (props) => {
 
-  const { id, description, amount, category: { id: categoryId , name: categoryName, color: categoryColor }, _changeRoute, isCategoryReport } = props;
+  const { 
+    id,
+    description,
+    amount, 
+    category: { id: categoryId , name: categoryName, color: categoryColor },
+    _changeRoute,
+    isCategoryReport,
+    currentPage, 
+    pageLimit
+  } = props;
 
   const paletteMap = {
     blue:    '#5e72e4',
@@ -80,7 +89,7 @@ const TableEntry = (props) => {
               Edit entry
             </DropdownItem>
             
-            <DeleteEntry {...{id, amount, isCategoryReport, categoryId}} />
+            <DeleteEntry {...{id, amount, isCategoryReport, categoryId, currentPage, pageLimit}} />
 
           </DropdownMenu>
         </UncontrolledDropdown>

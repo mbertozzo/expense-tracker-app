@@ -1,16 +1,25 @@
 import gql from 'graphql-tag';
 
 export const _getMovements = gql `
-query {
-  movements {
-    id
-    description
-    amount
-    category {
+query movements (
+  $offset: Int
+  $limit: Int
+) {
+  movements(
+    offset: $offset
+    limit: $limit
+  ) {
+    nodes {
       id
-      name
-      color
+      description
+      amount
+      category {
+        id
+        name
+        color
+      }
     }
+    totalCount
   }
 }
 `;
