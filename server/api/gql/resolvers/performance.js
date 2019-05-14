@@ -40,7 +40,11 @@ module.exports = (db) => {
   return Promise
     .all([monthlyExpenses, monthlyRevenues])
     .then(responses => {
-      const percentage = (responses[0]*100)/responses[1];
-      return Math.abs(percentage.toFixed(2));
+      if (responses.every((value) => value === 0)){
+        return 0;
+      } else {
+        const percentage = (responses[0]*100)/responses[1];
+        return Math.abs(percentage.toFixed(2));
+      }
     });
 }

@@ -9,4 +9,4 @@ stats.json
 npm-debug.log
 .idea
 
-server/api/config/config.json
+.env
