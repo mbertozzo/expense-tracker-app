@@ -1,4 +1,5 @@
 /* eslint consistent-return:0 import/order:0 */
+require('dotenv').config();
 
 const express = require('express');
 const logger = require('./logger');
@@ -56,23 +57,28 @@ app.get('*.js', (req, res, next) => {
 
 // set force: false to prevent sequelize from dropping
 // existing tables
-db.sequelize.sync({ force: true }).then(() => {
-  // populate category table with dummy data
-  db.category.bulkCreate(
-    times(10, () => ({
-      name: faker.lorem.slug(),
-      color: 'red'
-    }))
-  );
-  // populate post table with dummy data
-  db.movement.bulkCreate(
-    times(103, (index) => ({
-      description: faker.lorem.sentence(),
-      amount: index,
-      issue_date: faker.date.recent(),
-      categoryId: random(1, 10)
-    }))
-  );
+let dropTable = false;
+if(process.env.DROP_EXISTING_TABLES === 'true') { dropTable = true }
+db.sequelize.sync({ force: dropTable }).then(() => {
+
+  if (process.env.INIT_DUMMY_DATA === 'true'){
+    // populate category table with dummy data
+    db.category.bulkCreate(
+      times(10, () => ({
+        name: faker.lorem.slug(),
+        color: 'red'
+      }))
+    );
+    // populate movement table with dummy data
+    db.movement.bulkCreate(
+      times(50, () => ({
+        description: faker.lorem.sentence(),
+        amount: faker.random.number(),
+        issue_date: faker.date.recent(),
+        categoryId: random(1, 10)
+      }))
+    );
+  }
 
   // Start your app.
   app.listen(port, host, async err => {
